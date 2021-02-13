@@ -4,14 +4,18 @@ using System.Text;
 
 namespace AddressBookUsingCollection
 {
-    class AddressBook
+    public class AddressBook
     {
-        List<Person> addressBook;//list collection
+        public List<Person> addressBook;
         public AddressBook()
         {
             addressBook = new List<Person>();
         }
 
+        public void AddAddressBookEntry(Person person)
+        {
+            addressBook.Add(person);
+        }
         public void AddAddressBookEntry()
         {
             Person personEntered = new Person();

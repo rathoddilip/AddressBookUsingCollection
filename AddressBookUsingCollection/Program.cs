@@ -8,7 +8,7 @@ namespace AddressBookUsingCollection
         {
 
             Console.WriteLine("Welcome to Address Book!");
-            Console.WriteLine("Enter Default Address Book Name");
+            Console.WriteLine("Enter Address Book Name");
             string addressBookName = Console.ReadLine();
             AddressBookCollection addressBookCollection = new AddressBookCollection();
             AddressBook addressBook = new AddressBook();

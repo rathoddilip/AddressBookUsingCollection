@@ -4,8 +4,9 @@ using System.Text;
 
 namespace AddressBookUsingCollection
 {
-    class Person
+    class Person 
     {
+        //variables
         public string firstName;
         public string lastName;
         public string address;

@@ -6,7 +6,7 @@ namespace AddressBookUsingCollection
 {
     class AddressBook
     {
-        List<Person> addressBook;
+        List<Person> addressBook;//list collection
         public AddressBook()
         {
             addressBook = new List<Person>();

@@ -6,7 +6,7 @@ namespace AddressBookUsingCollection
 {
     class AddressBookCollection
     {
-        public Dictionary<string, AddressBook> addressBookDictionary;
+        public Dictionary<string, AddressBook> addressBookDictionary;//Dictionary collection
         public AddressBookCollection()
         {
             addressBookDictionary = new Dictionary<string, AddressBook>();

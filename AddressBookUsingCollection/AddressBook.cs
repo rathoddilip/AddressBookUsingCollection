@@ -11,12 +11,30 @@ namespace AddressBookUsingCollection
         {
             addressBook = new List<Person>();
         }
-
-        public void AddAddressBookEntry(Person person)
+        public void AddPersonToDictionary(Dictionary<string, List<Person>> personDictionary, Person person, string placeEntity)
         {
+            if (personDictionary.ContainsKey(placeEntity))
+            {
+                personDictionary[placeEntity].Add(person);
+            }
+            else
+            {
+                List<Person> newList = new List<Person>();
+                newList.Add(person);
+                personDictionary.Add(placeEntity, newList);
+            }
+        }
+        private void AddPersonToCityAndState(AddressBookCollection addressBookCollection, Person person)
+        {
+            AddPersonToDictionary(addressBookCollection.cityDictionary, person, person.city);
+            AddPersonToDictionary(addressBookCollection.stateDictionary, person, person.state);
+        }
+        public void AddAddressBookEntry(Person person, AddressBookCollection addressBookCollection)
+        {
+            AddPersonToCityAndState(addressBookCollection, person);
             addressBook.Add(person);
         }
-        public void AddAddressBookEntry()
+        public void AddAddressBookEntry(AddressBookCollection addressBookCollection)
         {
             Person personEntered = new Person();
             Console.WriteLine("Enter First name");
@@ -40,6 +58,10 @@ namespace AddressBookUsingCollection
             personEntered.phoneNumber = Console.ReadLine();
             Console.WriteLine("Enter Email");
             personEntered.email = Console.ReadLine();
+            List<Person> listPerson = new List<Person>();
+            listPerson.Add(personEntered);
+            addressBookCollection.cityDictionary[personEntered.city]= listPerson;
+            addressBookCollection.stateDictionary[personEntered.state]= listPerson;
             addressBook.Add(personEntered);
         }
         public void DisplayNamesInAddresBook()
@@ -109,4 +131,5 @@ namespace AddressBookUsingCollection
                 Console.WriteLine("Entry Not found");
         }
     }
+
 }

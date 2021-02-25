@@ -6,10 +6,14 @@ namespace AddressBookUsingCollection
 {
     public class AddressBookCollection
     {
-        public Dictionary<string, AddressBook> addressBookDictionary;//Dictionary collection
+        public Dictionary<string, AddressBook> addressBookDictionary;
+        public Dictionary<string, List<Person>> cityDictionary;
+        public Dictionary<string, List<Person>> stateDictionary;
         public AddressBookCollection()
         {
             addressBookDictionary = new Dictionary<string, AddressBook>();
+            cityDictionary = new Dictionary<string, List<Person>>();
+            stateDictionary = new Dictionary<string, List<Person>>();
         }
         public void PrintAllAddressBookNames()
         {
@@ -28,6 +32,21 @@ namespace AddressBookUsingCollection
                     Console.WriteLine($" {person.firstName} {person.lastName} is in {person.city} {person.state}");
                 }
             }
+        }
+        public void ViewPersonsByCityOrState(string city, string state)
+        {
+            Console.WriteLine($"People in {city} city:");
+            foreach (Person person in cityDictionary[city])
+            {
+                Console.WriteLine(person.firstName + " " + person.lastName);
+            }
+
+            Console.WriteLine($"People in {state} state:");
+            foreach (Person person in stateDictionary[state])
+            {
+                Console.WriteLine(person.firstName + " " + person.lastName);
+            }
+
         }
     }
 }

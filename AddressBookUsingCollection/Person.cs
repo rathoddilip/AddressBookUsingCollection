@@ -7,7 +7,7 @@ namespace AddressBookUsingCollection
     public class Person 
     {
         //variables
-        public string firstName;
+        public string  firstName;//
         public string lastName;
         public string address;
         public string city;

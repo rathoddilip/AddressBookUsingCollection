@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
@@ -46,7 +47,15 @@ namespace AddressBookUsingCollection
             {
                 Console.WriteLine(person.firstName + " " + person.lastName);
             }
+        }
+        public void ViewCountByCityOrState(string city, string state)
+        {
+            var arrayList = new ArrayList();
 
+            arrayList.Add("Count of " + city + " is " + cityDictionary[city].Count);
+            arrayList.Add("Count of " + state + " is " + stateDictionary[state].Count);
+            Console.WriteLine("Count of  " + city + " is " + cityDictionary[city].Count);
+            Console.WriteLine(" Count of " + state + " is " + stateDictionary[state].Count);
         }
     }
 }

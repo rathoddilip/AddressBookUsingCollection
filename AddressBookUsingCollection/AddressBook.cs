@@ -31,8 +31,14 @@ namespace AddressBookUsingCollection
         }
         public void AddAddressBookEntry(Person person, AddressBookCollection addressBookCollection)
         {
+            if (addressBook.Find(i => person.Equals(i)) != null)
+            {
+                throw new AddressBookException("Person already Exists, enter new person!");
+            }
             AddPersonToCityAndState(addressBookCollection, person);
             addressBook.Add(person);
+
+
         }
         public void AddAddressBookEntry(AddressBookCollection addressBookCollection)
         {
@@ -58,10 +64,7 @@ namespace AddressBookUsingCollection
             personEntered.phoneNumber = Console.ReadLine();
             Console.WriteLine("Enter Email");
             personEntered.email = Console.ReadLine();
-            List<Person> listPerson = new List<Person>();
-            listPerson.Add(personEntered);
-            addressBookCollection.cityDictionary[personEntered.city]= listPerson;
-            addressBookCollection.stateDictionary[personEntered.state]= listPerson;
+            AddPersonToCityAndState(addressBookCollection, personEntered);
             addressBook.Add(personEntered);
         }
         public void DisplayNamesInAddresBook()

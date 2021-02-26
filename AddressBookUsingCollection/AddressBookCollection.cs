@@ -55,7 +55,7 @@ namespace AddressBookUsingCollection
             arrayList.Add("Count of " + city + " is " + cityDictionary[city].Count);
             arrayList.Add("Count of " + state + " is " + stateDictionary[state].Count);
             Console.WriteLine("Count of  " + city + " is " + cityDictionary[city].Count);
-            Console.WriteLine(" Count of " + state + " is " + stateDictionary[state].Count);
+            Console.WriteLine("Count of " + state + " is " + stateDictionary[state].Count);
         }
     }
 }

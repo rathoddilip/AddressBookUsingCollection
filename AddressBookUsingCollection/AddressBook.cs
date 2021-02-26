@@ -134,7 +134,10 @@ namespace AddressBookUsingCollection
                 index++;
             }
             if (found)
+            {
                 addressBook.Remove(addressBook[index]);
+                Console.WriteLine("Contact removed succussfully");
+            }
             else
                 Console.WriteLine("Entry Not found");
         }

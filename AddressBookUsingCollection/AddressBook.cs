@@ -11,7 +11,7 @@ namespace AddressBookUsingCollection
         {
             addressBook = new List<Person>();
         }
-        public void AddPersonToDictionary(Dictionary<string, List<Person>> personDictionary, Person person, string placeEntity)
+        private void AddPersonToDictionary(Dictionary<string, List<Person>> personDictionary, Person person, string placeEntity)
         {
             if (personDictionary.ContainsKey(placeEntity))
             {
@@ -24,6 +24,11 @@ namespace AddressBookUsingCollection
                 personDictionary.Add(placeEntity, newList);
             }
         }
+        /// <summary>
+        /// Adds the state of the person to city and.
+        /// </summary>
+        /// <param name="addressBookCollection">The address book collection.</param>
+        /// <param name="person">The person.</param>
         private void AddPersonToCityAndState(AddressBookCollection addressBookCollection, Person person)
         {
             AddPersonToDictionary(addressBookCollection.cityDictionary, person, person.city);
@@ -31,8 +36,14 @@ namespace AddressBookUsingCollection
         }
         public void AddAddressBookEntry(Person person, AddressBookCollection addressBookCollection)
         {
+            if (addressBook.Find(i => person.Equals(i)) != null)
+            {
+                throw new AddressBookException("Person already Exists, enter new person!");
+            }
             AddPersonToCityAndState(addressBookCollection, person);
             addressBook.Add(person);
+
+
         }
         public void AddAddressBookEntry(AddressBookCollection addressBookCollection)
         {
@@ -58,10 +69,7 @@ namespace AddressBookUsingCollection
             personEntered.phoneNumber = Console.ReadLine();
             Console.WriteLine("Enter Email");
             personEntered.email = Console.ReadLine();
-            List<Person> listPerson = new List<Person>();
-            listPerson.Add(personEntered);
-            addressBookCollection.cityDictionary[personEntered.city]= listPerson;
-            addressBookCollection.stateDictionary[personEntered.state]= listPerson;
+            AddPersonToCityAndState(addressBookCollection,personEntered);
             addressBook.Add(personEntered);
         }
         public void DisplayNamesInAddresBook()

@@ -7,10 +7,13 @@ namespace AddressBookUsingCollection
     public class AddressBook
     {
         public List<Person> addressBook;
+       
         public AddressBook()
         {
             addressBook = new List<Person>();
+            
         }
+       
         private void AddPersonToDictionary(Dictionary<string, List<Person>> personDictionary, Person person, string placeEntity)
         {
             if (personDictionary.ContainsKey(placeEntity))
@@ -140,6 +143,13 @@ namespace AddressBookUsingCollection
             }
             else
                 Console.WriteLine("Entry Not found");
+        }
+        /// <summary>
+        /// UC-11 Sort entries in addressbook alphabatically by person's name
+        /// </summary>
+        public void SortByFirstName()
+        {
+            addressBook.Sort((x, y) => x.firstName.CompareTo(y.firstName));
         }
     }
 

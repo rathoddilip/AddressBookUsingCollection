@@ -4,6 +4,33 @@ namespace AddressBookUsingCollection
 {
    public class Program
     {
+        static void SortByCityStateorZip(AddressBookCollection addressBookCollection, string addressBookName)
+        {
+            Console.WriteLine("------------------------------");
+            Console.WriteLine("Enter Choice:");
+            Console.WriteLine("1) Sort By City");
+            Console.WriteLine("2) Sort By State");
+            Console.WriteLine("3) Sort By Zip");
+            Console.WriteLine("------------------------------");
+            int choice = Convert.ToInt32(Console.ReadLine());
+            switch (choice)
+            {
+                case 1:
+                    addressBookCollection.addressBookDictionary[addressBookName].SortByCity();
+                    break;
+                case 2:
+                    addressBookCollection.addressBookDictionary[addressBookName].SortByState();
+                    break;
+                case 3:
+                    addressBookCollection.addressBookDictionary[addressBookName].SortByZip();
+                    break;
+                default:
+                    Console.WriteLine("Enter proper choice");
+                    break;
+            }
+
+        }
+
         static void Main(string[] args)
         {
 
@@ -27,7 +54,8 @@ namespace AddressBookUsingCollection
                 Console.WriteLine("8) View person by state or city");
                 Console.WriteLine("9) View Count by state or city");
                 Console.WriteLine("10 Sort by name");
-                Console.WriteLine("11) Exit");
+                Console.WriteLine("11) Sort by City,State or Zip");
+                Console.WriteLine("12) Exit");
                 choice = Convert.ToInt32(Console.ReadLine());
                 switch (choice)
                 {
@@ -90,15 +118,17 @@ namespace AddressBookUsingCollection
                     case 10:
                         addressBookCollection.addressBookDictionary[addressBookName].SortByFirstName();
                         break;
-
                     case 11:
+                        SortByCityStateorZip(addressBookCollection, addressBookName);
+                        break;
+                    case 12:
                         Console.WriteLine("Thank you");
                         break;
                     default:
                         Console.WriteLine("please enter proper choice");
                         break;
                 }
-            } while (choice != 11);
+            } while (choice != 13);
         }
     }
     }

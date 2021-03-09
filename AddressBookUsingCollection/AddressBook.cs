@@ -151,6 +151,21 @@ namespace AddressBookUsingCollection
         {
             addressBook.Sort((x, y) => x.firstName.CompareTo(y.firstName));
         }
+        /// <summary>
+        /// UC12- Sort entries in addressbook alphabatically by zip,city and state
+        /// </summary>
+        public void SortByZip()
+        {
+            addressBook.Sort((x, y) => x.zip.CompareTo(y.zip));
+        }
+        public void SortByCity()
+        {
+            addressBook.Sort((x, y) => x.city.CompareTo(y.city));
+        }
+        public void SortByState()
+        {
+            addressBook.Sort((x, y) => x.state.CompareTo(y.state));
+        }
     }
 
 }

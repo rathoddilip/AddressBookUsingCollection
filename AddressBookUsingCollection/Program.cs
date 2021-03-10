@@ -57,7 +57,9 @@ namespace AddressBookUsingCollection
                 Console.WriteLine("11) Sort by City,State or Zip");
                 Console.WriteLine("12) Read From File");
                 Console.WriteLine("13) Write to File");
-                Console.WriteLine("14) Exit");
+                Console.WriteLine("14) Write to csv File");
+                Console.WriteLine("15) Read From csv File");
+                Console.WriteLine("16) Exit");
                 choice = Convert.ToInt32(Console.ReadLine());
                 switch (choice)
                 {
@@ -130,13 +132,19 @@ namespace AddressBookUsingCollection
                         addressBookCollection.WriteAddressBookCollectionToFiles();
                         break;
                     case 14:
+                        addressBookCollection.WriteAddressBookCollectionToFilesCSV();
+                        break;
+                    case 15:
+                        addressBookCollection.ReadFilesToAddressBookCollectionCSV();
+                        break;
+                    case 16:
                         Console.WriteLine("Thank you");
                         break;
                     default:
                         Console.WriteLine("please enter proper choice");
                         break;
                 }
-            } while (choice != 15);
+            } while (choice != 17);
         }
     }
     }

@@ -1,4 +1,8 @@
-﻿using System;
+﻿using CsvHelper;
+using CsvHelper.Configuration;
+using System.Globalization;
+using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -152,7 +156,48 @@ namespace AddressBookUsingCollection
                     }
                 }
 
+            }
+        }
+        /// <summary>
+        /// Writes the address book collection to files CSV.
+        /// </summary>
+        public void WriteAddressBookCollectionToFilesCSV()
+        {
+            string folderPath = @"C:\Users\Dilip Rathod\Desktop\Bridgelab\BatchDotNetFellowship-015\AddressBookUsingCollection\AddressBookUsingCollection\csvFiles\";
+            CsvConfiguration configuration = new CsvConfiguration(CultureInfo.InvariantCulture);
+            foreach (var AddressBookItem in addressBookDictionary)
+            {
+                string filePath = folderPath + AddressBookItem.Key + ".csv";
+                using (StreamWriter writer = new StreamWriter(filePath))
+                using (var csvExport = new CsvWriter(writer, configuration))
+                {
+                    csvExport.WriteRecords(AddressBookItem.Value.addressBook);
 
+                }
+            }
+        }
+        /// <summary>
+        /// Reads the files to address book collection CSV.
+        /// </summary>
+        public void ReadFilesToAddressBookCollectionCSV()
+        {
+            string folderPath = @"C:\Users\Dilip Rathod\Desktop\Bridgelab\BatchDotNetFellowship-015\AddressBookUsingCollection\AddressBookUsingCollection\csvFiles\";
+            DirectoryInfo d = new DirectoryInfo(folderPath);
+            foreach (var file in d.GetFiles("*.csv"))
+            {
+                string addressBookName = file.Name.Replace(".csv", "");
+                if (!this.addressBookDictionary.ContainsKey(addressBookName))
+                {
+                    this.addressBookDictionary.Add(addressBookName, new AddressBook());
+                    using (var reader = new StreamReader(folderPath + file.Name))
+                    using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
+                    {
+                        List<Person> people = csv.GetRecords<Person>().ToList();
+                        this.addressBookDictionary[addressBookName].addressBook = people;
+                        reader.Close();
+                        Console.WriteLine("Successfully read records from the file " + file.Name);
+                    }
+                }
             }
         }
 

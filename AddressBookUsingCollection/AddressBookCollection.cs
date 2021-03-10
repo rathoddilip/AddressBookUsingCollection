@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace AddressBookUsingCollection
@@ -67,7 +68,93 @@ namespace AddressBookUsingCollection
             Console.WriteLine($"Count of {state} is {stateDictionary[state].Count}");
             return outputLines;
         }
-       
+        private List<Person> GetPeopleFromFile(string filepath)
+        {
+            List<Person> people = new List<Person>();
+            string[] lines = File.ReadAllLines(filepath);
+            int noOfRecords = lines.Length / 8;
+            for (int i = 1; i <= noOfRecords; i++)
+            {
+                Person person = new Person();
+                person.firstName = lines[0 * i].Split(':')[1];
+                person.lastName = lines[1 * i].Split(':')[1];
+                person.address = lines[2 * i].Split(':')[1];
+                person.city = lines[3 * i].Split(':')[1];
+                person.state = lines[4 * i].Split(':')[1];
+                person.zip = lines[5 * i].Split(':')[1];
+                person.phoneNumber = lines[6 * i].Split(':')[1];
+                person.email = lines[7 * i].Split(':')[1];
+                people.Add(person);
+            }
+            return people;
+        }
+        /// <summary>
+        /// UC13: Read files to addressbook
+        /// </summary>
+        public void ReadFilesToAddressBookCollection()
+        {
+            string folderPath = @"C:\Users\Dilip Rathod\Desktop\Bridgelab\BatchDotNetFellowship-015\AddressBookUsingCollection\AddressBookUsingCollection\Files\";
+            DirectoryInfo d = new DirectoryInfo(folderPath);
+            foreach (var file in d.GetFiles("*.txt"))
+            {
+                string addressBookName = file.Name.Replace(".txt", "");
+                if (!this.addressBookDictionary.ContainsKey(addressBookName))
+                {
+                    this.addressBookDictionary.Add(addressBookName, new AddressBook());
+                    List<Person> people = GetPeopleFromFile(folderPath + file.Name);
+                    this.addressBookDictionary[addressBookName].addressBook = people;
+                }
+
+            }
+
+            foreach (var AddressBookItem in addressBookDictionary)
+            {
+                string filePath = folderPath + AddressBookItem.Key + ".txt";
+                using (StreamWriter writer = new StreamWriter(filePath))
+                {
+                    foreach (Person person in AddressBookItem.Value.addressBook)
+                    {
+                        writer.WriteLine($"First Name : {person.firstName}");
+                        writer.WriteLine($"Last Name : {person.lastName}");
+                        writer.WriteLine($"Address : {person.address}");
+                        writer.WriteLine($"City : {person.city}");
+                        writer.WriteLine($"State : {person.state}");
+                        writer.WriteLine($"Zip : {person.zip}");
+                        writer.WriteLine($"PhoneNumber : {person.phoneNumber}");
+                        writer.WriteLine($"Email : {person.email}");
+                    }
+                }
+
+
+            }
+        }
+        /// <summary>
+        /// UC13- Write Addressbook to files
+        /// </summary>
+        public void WriteAddressBookCollectionToFiles()
+        {
+            string folderPath = @"C:\Users\Dilip Rathod\Desktop\Bridgelab\BatchDotNetFellowship-015\AddressBookUsingCollection\AddressBookUsingCollection\Files\";
+            foreach (var AddressBookItem in addressBookDictionary)
+            {
+                string filePath = folderPath + AddressBookItem.Key + ".txt";
+                using (StreamWriter writer = new StreamWriter(filePath))
+                {
+                    foreach (Person person in AddressBookItem.Value.addressBook)
+                    {
+                        writer.WriteLine($"First Name : {person.firstName}");
+                        writer.WriteLine($"Last Name : {person.lastName}");
+                        writer.WriteLine($"Address : {person.address}");
+                        writer.WriteLine($"City : {person.city}");
+                        writer.WriteLine($"State : {person.state}");
+                        writer.WriteLine($"Zip : {person.zip}");
+                        writer.WriteLine($"PhoneNumber : {person.phoneNumber}");
+                        writer.WriteLine($"Email : {person.email}");
+                    }
+                }
+
+
+            }
+        }
 
     }
 }

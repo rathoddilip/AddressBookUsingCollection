@@ -7,7 +7,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-
+using Newtonsoft.Json;
 namespace AddressBookUsingCollection
 {
     public class AddressBookCollection
@@ -215,6 +215,43 @@ namespace AddressBookUsingCollection
                         Console.WriteLine("Successfully read records from the file " + file.Name);
                     }
                 }
+            }
+        }
+        /// <summary>
+        /// Reads the files to address book collection json.
+        /// </summary>
+        public void ReadFilesToAddressBookCollectionJSON()
+        {
+            string folderPath = @"C:\Users\Dilip Rathod\Desktop\Bridgelab\BatchDotNetFellowship-015\AddressBookUsingCollection\AddressBookUsingCollection\jsonFiles\";
+            DirectoryInfo d = new DirectoryInfo(folderPath);
+            foreach (var file in d.GetFiles("*.json"))
+            {
+                string addressBookName = file.Name.Replace(".json", "");
+                if (!this.addressBookDictionary.ContainsKey(addressBookName))
+                {
+                    this.addressBookDictionary.Add(addressBookName, new AddressBook());
+                    List<Person> people = JsonConvert.DeserializeObject<List<Person>>(File.ReadAllText(folderPath + file.Name));
+                    this.addressBookDictionary[addressBookName].addressBook = people;
+                    Console.WriteLine("Successfully read records from the file " + file.Name);
+                }
+            }
+        }
+        /// <summary>
+        /// Writes the address book collection to files json.
+        /// </summary>
+        public void WriteAddressBookCollectionToFilesJSON()
+        {
+            string folderPath = @"C:\Users\Dilip Rathod\Desktop\Bridgelab\BatchDotNetFellowship-015\AddressBookUsingCollection\AddressBookUsingCollection\jsonFiles\";
+            foreach (var AddressBookItem in addressBookDictionary)
+            {
+                string filePath = folderPath + AddressBookItem.Key + ".json";
+                JsonSerializer serializer = new JsonSerializer();
+                using (StreamWriter writer = new StreamWriter(filePath))
+                using (JsonWriter jsonWriter = new JsonTextWriter(writer))
+                {
+                    serializer.Serialize(writer, AddressBookItem.Value.addressBook);
+                }
+                //writer.Close();
             }
         }
 

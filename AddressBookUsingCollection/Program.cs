@@ -59,7 +59,9 @@ namespace AddressBookUsingCollection
                 Console.WriteLine("13) Write to File");
                 Console.WriteLine("14) Write to csv File");
                 Console.WriteLine("15) Read From csv File");
-                Console.WriteLine("16) Exit");
+                Console.WriteLine("16) Read From json File");
+                Console.WriteLine("17) write to json  File");
+                Console.WriteLine("18) Exit");
                 choice = Convert.ToInt32(Console.ReadLine());
                 switch (choice)
                 {
@@ -138,13 +140,16 @@ namespace AddressBookUsingCollection
                         addressBookCollection.ReadFilesToAddressBookCollectionCSV();
                         break;
                     case 16:
-                        Console.WriteLine("Thank you");
+                        addressBookCollection.ReadFilesToAddressBookCollectionJSON();
+                        break;
+                    case 17:
+                        addressBookCollection.WriteAddressBookCollectionToFilesJSON();
                         break;
                     default:
                         Console.WriteLine("please enter proper choice");
                         break;
                 }
-            } while (choice != 17);
+            } while (choice != 18);
         }
     }
     }

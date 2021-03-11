@@ -8,10 +8,12 @@
   <ItemGroup>
     <Folder Include="Files\" />
     <Folder Include="csvFiles\" />
+    <Folder Include="jsonFiles\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="CsvHelper" Version="26.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
 
 </Project>

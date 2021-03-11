@@ -98,8 +98,8 @@ namespace AddressBookUsingCollection
         public void ReadFilesToAddressBookCollection()
         {
             string folderPath = @"C:\Users\Dilip Rathod\Desktop\Bridgelab\BatchDotNetFellowship-015\AddressBookUsingCollection\AddressBookUsingCollection\Files\";
-            DirectoryInfo d = new DirectoryInfo(folderPath);
-            foreach (var file in d.GetFiles("*.txt"))
+            DirectoryInfo directoryInfo = new DirectoryInfo(folderPath);
+            foreach (var file in directoryInfo.GetFiles("*.txt"))
             {
                 string addressBookName = file.Name.Replace(".txt", "");
                 if (!this.addressBookDictionary.ContainsKey(addressBookName))
@@ -164,15 +164,32 @@ namespace AddressBookUsingCollection
         public void WriteAddressBookCollectionToFilesCSV()
         {
             string folderPath = @"C:\Users\Dilip Rathod\Desktop\Bridgelab\BatchDotNetFellowship-015\AddressBookUsingCollection\AddressBookUsingCollection\csvFiles\";
-            CsvConfiguration configuration = new CsvConfiguration(CultureInfo.InvariantCulture);
+            CsvConfiguration configuration = new CsvConfiguration(CultureInfo.InvariantCulture)
+            {
+                IncludePrivateMembers = true,
+            };
             foreach (var AddressBookItem in addressBookDictionary)
             {
                 string filePath = folderPath + AddressBookItem.Key + ".csv";
                 using (StreamWriter writer = new StreamWriter(filePath))
                 using (var csvExport = new CsvWriter(writer, configuration))
                 {
-                    csvExport.WriteRecords(AddressBookItem.Value.addressBook);
-
+                  // csvExport.WriteRecords(AddressBookItem.Value.addressBook);
+                    csvExport.WriteHeader<Person>();
+                    csvExport.NextRecord();
+                    foreach (Person person in AddressBookItem.Value.addressBook)
+                    {
+                        csvExport.WriteField($"{person.firstName}");
+                        csvExport.WriteField($"{person.lastName}");
+                        csvExport.WriteField($"{person.address}");
+                        csvExport.WriteField($"{person.city}");
+                        csvExport.WriteField($"{person.state}");
+                        csvExport.WriteField($"{person.zip}");
+                        csvExport.WriteField($"{person.phoneNumber}");
+                        csvExport.WriteField($"{person.email}");
+                        csvExport.NextRecord();
+                    }
+                    
                 }
             }
         }
@@ -182,8 +199,8 @@ namespace AddressBookUsingCollection
         public void ReadFilesToAddressBookCollectionCSV()
         {
             string folderPath = @"C:\Users\Dilip Rathod\Desktop\Bridgelab\BatchDotNetFellowship-015\AddressBookUsingCollection\AddressBookUsingCollection\csvFiles\";
-            DirectoryInfo d = new DirectoryInfo(folderPath);
-            foreach (var file in d.GetFiles("*.csv"))
+            DirectoryInfo directoryInfo = new DirectoryInfo(folderPath);
+            foreach (var file in directoryInfo.GetFiles("*.csv"))
             {
                 string addressBookName = file.Name.Replace(".csv", "");
                 if (!this.addressBookDictionary.ContainsKey(addressBookName))

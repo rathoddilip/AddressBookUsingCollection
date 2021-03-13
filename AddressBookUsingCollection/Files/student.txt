@@ -1,8 +1,24 @@
-First Name : dilip
-Last Name : rathod
-Address : chalisgaon
-City : pune
-State : maharashtra
-Zip : 323233
-PhoneNumber : 5544332211
-Email : dilip@gmail.com
+First Name : Dilip
+Last Name : Rathod
+Address : Chalisgaon
+City : Jalgaon
+State : Maharashtra
+Zip : 424101
+PhoneNumber : 7756994045
+Email : diliprathod300492@gmail.com
+First Name : Sandip
+Last Name : Rathod
+Address : Parola
+City : Nashik
+State : Maharashtra
+Zip : 424103
+PhoneNumber : 8208026707
+Email : sandip@gmail.com
+First Name : Ranjit
+Last Name : Jadhav
+Address : Thane
+City : Mumbai
+State : Maharashtra
+Zip : 420031
+PhoneNumber : 9763127209
+Email : ranjit@gmail.com

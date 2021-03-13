@@ -1,13 +1,14 @@
 ﻿using CsvHelper;
 using CsvHelper.Configuration;
-using System.Globalization;
+using Newtonsoft.Json;
 using System;
-using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Text;
-using Newtonsoft.Json;
+
 namespace AddressBookUsingCollection
 {
     public class AddressBookCollection
@@ -93,71 +94,83 @@ namespace AddressBookUsingCollection
             return people;
         }
         /// <summary>
-        /// UC13: Read files to addressbook
+        /// UC13: Read all files from given path
         /// </summary>
         public void ReadFilesToAddressBookCollection()
         {
             string folderPath = @"C:\Users\Dilip Rathod\Desktop\Bridgelab\BatchDotNetFellowship-015\AddressBookUsingCollection\AddressBookUsingCollection\Files\";
-            DirectoryInfo directoryInfo = new DirectoryInfo(folderPath);
-            foreach (var file in directoryInfo.GetFiles("*.txt"))
+            string[] filePaths = Directory.GetFiles(folderPath,"*.txt");
+            if (filePaths == null || filePaths.Length == 0)
             {
-                string addressBookName = file.Name.Replace(".txt", "");
-                if (!this.addressBookDictionary.ContainsKey(addressBookName))
-                {
-                    this.addressBookDictionary.Add(addressBookName, new AddressBook());
-                    List<Person> people = GetPeopleFromFile(folderPath + file.Name);
-                    this.addressBookDictionary[addressBookName].addressBook = people;
-                }
-
+                Console.WriteLine("File not exists");
             }
-
-            foreach (var AddressBookItem in addressBookDictionary)
-            {
-                string filePath = folderPath + AddressBookItem.Key + ".txt";
-                using (StreamWriter writer = new StreamWriter(filePath))
+            else
+            { 
+                foreach (var presentFiles in filePaths)
                 {
-                    foreach (Person person in AddressBookItem.Value.addressBook)
+                    using (StreamReader streamReader = File.OpenText(presentFiles))
                     {
-                        writer.WriteLine($"First Name : {person.firstName}");
-                        writer.WriteLine($"Last Name : {person.lastName}");
-                        writer.WriteLine($"Address : {person.address}");
-                        writer.WriteLine($"City : {person.city}");
-                        writer.WriteLine($"State : {person.state}");
-                        writer.WriteLine($"Zip : {person.zip}");
-                        writer.WriteLine($"PhoneNumber : {person.phoneNumber}");
-                        writer.WriteLine($"Email : {person.email}");
+                        string lines = "";
+                        while ((lines = streamReader.ReadLine()) != null)
+                        {
+                            Console.WriteLine(lines);
+                        }
                     }
+                    Console.WriteLine("Successfully read records from the file " + presentFiles);
                 }
-
-
             }
         }
         /// <summary>
-        /// UC13- Write Addressbook to files
+        /// UC13- Write Addressbook to files and exists file
         /// </summary>
         public void WriteAddressBookCollectionToFiles()
         {
             string folderPath = @"C:\Users\Dilip Rathod\Desktop\Bridgelab\BatchDotNetFellowship-015\AddressBookUsingCollection\AddressBookUsingCollection\Files\";
+            
             foreach (var AddressBookItem in addressBookDictionary)
-            {
-                string filePath = folderPath + AddressBookItem.Key + ".txt";
-                using (StreamWriter writer = new StreamWriter(filePath))
                 {
-                    foreach (Person person in AddressBookItem.Value.addressBook)
+                    string  filePath = folderPath + AddressBookItem.Key + ".txt";
+                    if (File.Exists(filePath))
                     {
-                        writer.WriteLine($"First Name : {person.firstName}");
-                        writer.WriteLine($"Last Name : {person.lastName}");
-                        writer.WriteLine($"Address : {person.address}");
-                        writer.WriteLine($"City : {person.city}");
-                        writer.WriteLine($"State : {person.state}");
-                        writer.WriteLine($"Zip : {person.zip}");
-                        writer.WriteLine($"PhoneNumber : {person.phoneNumber}");
-                        writer.WriteLine($"Email : {person.email}");
+                        using (StreamWriter writer = File.AppendText(filePath))
+                        {
+                            foreach (Person person in AddressBookItem.Value.addressBook)
+                            {
+                                writer.WriteLine($"First Name : {person.firstName}");
+                                writer.WriteLine($"Last Name : {person.lastName}");
+                                writer.WriteLine($"Address : {person.address}");
+                                writer.WriteLine($"City : {person.city}");
+                                writer.WriteLine($"State : {person.state}");
+                                writer.WriteLine($"Zip : {person.zip}");
+                                writer.WriteLine($"PhoneNumber : {person.phoneNumber}");
+                                writer.WriteLine($"Email : {person.email}");
+                            }
+                        }
+                        Console.WriteLine("File exist and append new record to file successfully: "+filePath);
                     }
+
+                    else
+                    {
+                        filePath = folderPath + AddressBookItem.Key + ".txt";
+                        using (StreamWriter writer = new StreamWriter(filePath))
+                        {
+                            foreach (Person person in AddressBookItem.Value.addressBook)
+                            {
+                                writer.WriteLine($"First Name : {person.firstName}");
+                                writer.WriteLine($"Last Name : {person.lastName}");
+                                writer.WriteLine($"Address : {person.address}");
+                                writer.WriteLine($"City : {person.city}");
+                                writer.WriteLine($"State : {person.state}");
+                                writer.WriteLine($"Zip : {person.zip}");
+                                writer.WriteLine($"PhoneNumber : {person.phoneNumber}");
+                                writer.WriteLine($"Email : {person.email}");
+                            }
+                        }
+                    Console.WriteLine("New data write to file successfully: "+filePath);
                 }
 
-            }
-        }
+                }
+            } 
         /// <summary>
         /// Writes the address book collection to files CSV.
         /// </summary>
@@ -170,51 +183,47 @@ namespace AddressBookUsingCollection
             };
             foreach (var AddressBookItem in addressBookDictionary)
             {
-                string filePath = folderPath + AddressBookItem.Key + ".csv";
-                using (StreamWriter writer = new StreamWriter(filePath))
-                using (var csvExport = new CsvWriter(writer, configuration))
-                {
-                  // csvExport.WriteRecords(AddressBookItem.Value.addressBook);
-                    csvExport.WriteHeader<Person>();
-                    csvExport.NextRecord();
-                    foreach (Person person in AddressBookItem.Value.addressBook)
+                    string filePath = folderPath + AddressBookItem.Key + ".csv";
+                    using (StreamWriter writer = new StreamWriter(filePath))
+                    using (var csvExport = new CsvWriter(writer, configuration))
                     {
-                        csvExport.WriteField($"{person.firstName}");
-                        csvExport.WriteField($"{person.lastName}");
-                        csvExport.WriteField($"{person.address}");
-                        csvExport.WriteField($"{person.city}");
-                        csvExport.WriteField($"{person.state}");
-                        csvExport.WriteField($"{person.zip}");
-                        csvExport.WriteField($"{person.phoneNumber}");
-                        csvExport.WriteField($"{person.email}");
+                        // csvExport.WriteRecords(AddressBookItem.Value.addressBook);
+                        csvExport.WriteHeader<Person>();
                         csvExport.NextRecord();
+                        foreach (Person person in AddressBookItem.Value.addressBook)
+                        {
+                            csvExport.WriteField($"{person.firstName}");
+                            csvExport.WriteField($"{person.lastName}");
+                            csvExport.WriteField($"{person.address}");
+                            csvExport.WriteField($"{person.city}");
+                            csvExport.WriteField($"{person.state}");
+                            csvExport.WriteField($"{person.zip}");
+                            csvExport.WriteField($"{person.phoneNumber}");
+                            csvExport.WriteField($"{person.email}");
+                            csvExport.NextRecord();
+                        }
+
                     }
-                    
-                }
             }
         }
         /// <summary>
-        /// Reads the files to address book collection CSV.
+        /// Reads the existing CSV files
         /// </summary>
         public void ReadFilesToAddressBookCollectionCSV()
         {
             string folderPath = @"C:\Users\Dilip Rathod\Desktop\Bridgelab\BatchDotNetFellowship-015\AddressBookUsingCollection\AddressBookUsingCollection\csvFiles\";
-            DirectoryInfo directoryInfo = new DirectoryInfo(folderPath);
-            foreach (var file in directoryInfo.GetFiles("*.csv"))
+            string[] filePaths = Directory.GetFiles(folderPath, "*.csv");
+            foreach (var presentFiles in filePaths)
             {
-                string addressBookName = file.Name.Replace(".csv", "");
-                if (!this.addressBookDictionary.ContainsKey(addressBookName))
+                using (StreamReader streamReader = File.OpenText(presentFiles))
                 {
-                    this.addressBookDictionary.Add(addressBookName, new AddressBook());
-                    using (var reader = new StreamReader(folderPath + file.Name))
-                    using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
+                    string lines = "";
+                    while ((lines = streamReader.ReadLine()) != null)
                     {
-                        List<Person> people = csv.GetRecords<Person>().ToList();
-                        this.addressBookDictionary[addressBookName].addressBook = people;
-                        reader.Close();
-                        Console.WriteLine("Successfully read records from the file " + file.Name);
+                        Console.WriteLine(lines);
                     }
                 }
+                Console.WriteLine("Successfully read records from the file " + presentFiles);
             }
         }
         /// <summary>
@@ -254,6 +263,7 @@ namespace AddressBookUsingCollection
                 //writer.Close();
             }
         }
+
 
     }
 }
